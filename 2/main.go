@@ -1,41 +1,79 @@
 package main
 
 import (
-  "os"
-  "fmt"
+	"bufio"
+	"fmt"
+	"os"
+	"regexp"
+	"strconv"
+	"strings"
 )
 
 func main() {
-  input := os.Args[1]
+	// Set the sum to 0
+	sum := 0
 
-  if input == "one" {
-    fmt.Println("1")
-  }
-  if input == "two" {
-    fmt.Println("2")
-  }
-  if input == "three" {
-    fmt.Println("3")
-  }
-  if input == "four" {
-    fmt.Println("4")
-  }
-  if input == "five" {
-    fmt.Println("5")
-  }
-  if input == "six" {
-    fmt.Println("6")
-  }
-  if input == "seven" {
-    fmt.Println("7")
-  }
-  if input == "eight" {
-    fmt.Println("8")
-  }
-  if input == "nine" {
-    fmt.Println("9")
-  }
-  if input == "ten" {
-    fmt.Println("10")
-  }
+	// Read the file
+	filePath := os.Args[1]
+	readFile, err := os.Open(filePath)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	fileScanner := bufio.NewScanner(readFile)
+	fileScanner.Split(bufio.ScanLines)
+	var fileLines []string
+
+	for fileScanner.Scan() {
+		fileLines = append(fileLines, fileScanner.Text())
+	}
+
+	readFile.Close()
+
+	for _, line := range fileLines {
+		// print original line
+		fmt.Println(line)
+		// regex to find all digits and words
+		re := regexp.MustCompile(`(one|two|three|four|five|six|seven|eight|nine|\d)`)
+		// get all digits
+		allDigits := re.FindAllString(line, -1)
+		// fmt.Println(allDigits)
+		firstDigit := re.FindAllString(line, 1)
+		if len(firstDigit) > 0 {
+			if intValue, ok := wordToInt(firstDigit[0]); ok {
+				fmt.Println(intValue)
+			} else {
+				intFirstDigit, _ := strconv.Atoi(strings.Join(firstDigit, ""))
+				fmt.Println(intFirstDigit)
+			}
+		}
+		lastDigit := string(allDigits[len(allDigits)-1])
+		if len(lastDigit) > 0 {
+			if intValue, ok := wordToInt(lastDigit); ok {
+				fmt.Println(intValue)
+			} else {
+				intLastDigit, _ := strconv.Atoi(lastDigit)
+				fmt.Println(intLastDigit)
+			}
+		}
+
+	}
+	fmt.Println("Sum:", sum)
+}
+
+func wordToInt(word string) (int, bool) {
+	// Mapping of number words to Intergers
+	numberMap := map[string]int{
+		"one":   1,
+		"two":   2,
+		"three": 3,
+		"four":  4,
+		"five":  5,
+		"six":   6,
+		"seven": 7,
+		"eight": 8,
+		"nine":  9,
+	}
+	value, exists := numberMap[strings.ToLower(word)]
+	return value, exists
 }
