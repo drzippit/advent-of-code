@@ -58,7 +58,7 @@ func main() {
 			}
 		}
 		// combine first digit and last digit
-		sum += (intFirstDigit + intLastDigit)
+
 	}
 	fmt.Println("Sum:", sum)
 }
