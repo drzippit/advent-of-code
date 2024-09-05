@@ -37,26 +37,28 @@ func main() {
 		re := regexp.MustCompile(`(one|two|three|four|five|six|seven|eight|nine|\d)`)
 		// get all digits
 		allDigits := re.FindAllString(line, -1)
-		// fmt.Println(allDigits)
+		// Format the first digit
 		firstDigit := re.FindAllString(line, 1)
 		if len(firstDigit) > 0 {
-			if intValue, ok := wordToInt(firstDigit[0]); ok {
-				fmt.Println(intValue)
+			if intFirstValue, ok := wordToInt(firstDigit[0]); ok {
+				fmt.Println(intFirstValue)
 			} else {
 				intFirstDigit, _ := strconv.Atoi(strings.Join(firstDigit, ""))
 				fmt.Println(intFirstDigit)
 			}
 		}
+		// Format the last digit
 		lastDigit := string(allDigits[len(allDigits)-1])
 		if len(lastDigit) > 0 {
-			if intValue, ok := wordToInt(lastDigit); ok {
-				fmt.Println(intValue)
+			if intLastValue, ok := wordToInt(lastDigit); ok {
+				fmt.Println(intLastValue)
 			} else {
 				intLastDigit, _ := strconv.Atoi(lastDigit)
 				fmt.Println(intLastDigit)
 			}
 		}
-
+		// combine first digit and last digit
+		sum += (intFirstDigit + intLastDigit)
 	}
 	fmt.Println("Sum:", sum)
 }
