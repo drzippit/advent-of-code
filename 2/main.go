@@ -30,6 +30,9 @@ func main() {
 
 	readFile.Close()
 
+	var intLastDigit int
+	var intFirstDigit int
+
 	for _, line := range fileLines {
 		// print original line
 		fmt.Println(line)
@@ -41,24 +44,30 @@ func main() {
 		firstDigit := re.FindAllString(line, 1)
 		if len(firstDigit) > 0 {
 			if intFirstValue, ok := wordToInt(firstDigit[0]); ok {
-				fmt.Println(intFirstValue)
+				intFirstDigit = intFirstValue
 			} else {
-				intFirstDigit, _ := strconv.Atoi(strings.Join(firstDigit, ""))
-				fmt.Println(intFirstDigit)
+				intFirstValue, _ := strconv.Atoi(strings.Join(firstDigit, ""))
+				intFirstDigit = intFirstValue
 			}
 		}
 		// Format the last digit
 		lastDigit := string(allDigits[len(allDigits)-1])
 		if len(lastDigit) > 0 {
 			if intLastValue, ok := wordToInt(lastDigit); ok {
-				fmt.Println(intLastValue)
+				intLastDigit = intLastValue
 			} else {
-				intLastDigit, _ := strconv.Atoi(lastDigit)
-				fmt.Println(intLastDigit)
+				intLastValue, _ := strconv.Atoi(lastDigit)
+				intLastDigit = intLastValue
 			}
 		}
 		// combine first digit and last digit
+		combinedInts, err := strconv.Atoi(fmt.Sprintf("%d%d", intFirstDigit, intLastDigit))
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println(combinedInts)
 
+		sum += combinedInts
 	}
 	fmt.Println("Sum:", sum)
 }
